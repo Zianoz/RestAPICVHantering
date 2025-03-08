@@ -1,0 +1,6 @@
+@RestAPICVHantering_HostAddress = http://localhost:5111
+
+GET {{RestAPICVHantering_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
