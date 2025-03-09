@@ -1,11 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.InteropServices;
 
 namespace RestAPICVHantering.Models
 {
     public class Person
     {
-        [Key]
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int PersonID { get; set; } // PK
 
         [StringLength(30, MinimumLength = 1), Required]
@@ -17,12 +18,12 @@ namespace RestAPICVHantering.Models
         [StringLength(30, MinimumLength = 3), Required]
         public string Email { get; set; }
 
-        [Range(1, 12), Required]
-        public int Phone { get; set; }
+        [StringLength(12, MinimumLength = 1), Required]
+        public string Phone { get; set; }
 
         // Navigation Properties
-        public virtual Education Education { get; set; }
-        public virtual WorkExperience WorkExperience { get; set; }
+        public virtual List<Education> Education { get; set; } = new();
+        public virtual List<WorkExperience> WorkExperience { get; set; } = new();
 
     }
 } 

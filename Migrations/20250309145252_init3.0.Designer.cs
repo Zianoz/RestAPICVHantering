@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RestAPICVHantering.Data;
 
@@ -11,9 +12,11 @@ using RestAPICVHantering.Data;
 namespace RestAPICVHantering.Migrations
 {
     [DbContext(typeof(APICVDBContext))]
-    partial class APICVDBContextModelSnapshot : ModelSnapshot
+    [Migration("20250309145252_init3.0")]
+    partial class init30
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -35,7 +38,7 @@ namespace RestAPICVHantering.Migrations
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
 
-                    b.Property<DateTime?>("EndDate")
+                    b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("FieldOfStudy")
@@ -56,7 +59,8 @@ namespace RestAPICVHantering.Migrations
 
                     b.HasKey("EducationID");
 
-                    b.HasIndex("PersonID");
+                    b.HasIndex("PersonID")
+                        .IsUnique();
 
                     b.ToTable("Educations");
                 });
@@ -107,13 +111,13 @@ namespace RestAPICVHantering.Migrations
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
 
-                    b.Property<DateTime?>("EndDate")
+                    b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("JobDescription")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<string>("JobTitle")
                         .IsRequired()
@@ -128,34 +132,41 @@ namespace RestAPICVHantering.Migrations
 
                     b.HasKey("ExperienceID");
 
-                    b.HasIndex("PersonID");
+                    b.HasIndex("PersonID")
+                        .IsUnique();
 
                     b.ToTable("WorkExperiences");
                 });
 
             modelBuilder.Entity("RestAPICVHantering.Models.Education", b =>
                 {
-                    b.HasOne("RestAPICVHantering.Models.Person", null)
-                        .WithMany("Education")
-                        .HasForeignKey("PersonID")
+                    b.HasOne("RestAPICVHantering.Models.Person", "Person")
+                        .WithOne("Education")
+                        .HasForeignKey("RestAPICVHantering.Models.Education", "PersonID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Person");
                 });
 
             modelBuilder.Entity("RestAPICVHantering.Models.WorkExperience", b =>
                 {
-                    b.HasOne("RestAPICVHantering.Models.Person", null)
-                        .WithMany("WorkExperience")
-                        .HasForeignKey("PersonID")
+                    b.HasOne("RestAPICVHantering.Models.Person", "Person")
+                        .WithOne("WorkExperience")
+                        .HasForeignKey("RestAPICVHantering.Models.WorkExperience", "PersonID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Person");
                 });
 
             modelBuilder.Entity("RestAPICVHantering.Models.Person", b =>
                 {
-                    b.Navigation("Education");
+                    b.Navigation("Education")
+                        .IsRequired();
 
-                    b.Navigation("WorkExperience");
+                    b.Navigation("WorkExperience")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

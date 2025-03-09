@@ -1,6 +1,7 @@
 
 using Microsoft.EntityFrameworkCore;
 using RestAPICVHantering.Data;
+using RestAPICVHantering.Endpoints;
 
 namespace RestAPICVHantering
 {
@@ -35,10 +36,9 @@ namespace RestAPICVHantering
 
             app.UseAuthorization();
 
-            app.MapGet("/Data", () =>
-            {
-                return "Its working";
-            });
+            // Runs the Person endpoints and Githubapi endpoint
+            app.MapPersonEndpoints();
+            GithubAPIEndpoint.GithubAPI(app);
 
             app.Run();
         }

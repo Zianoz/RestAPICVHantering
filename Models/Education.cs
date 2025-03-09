@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Runtime.CompilerServices;
 
 namespace RestAPICVHantering.Models
 {
@@ -17,13 +16,11 @@ namespace RestAPICVHantering.Models
 
         [StringLength(30, MinimumLength = 1), Required]
         public string FieldOfStudy { get; set; }
+
         public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
+        public DateTime? EndDate { get; set; }
 
         [ForeignKey("Person")]
         public int PersonID { get; set; } // FK
-
-        // Navigation Property
-        public virtual Person Person { get; set; }
     }
 }
